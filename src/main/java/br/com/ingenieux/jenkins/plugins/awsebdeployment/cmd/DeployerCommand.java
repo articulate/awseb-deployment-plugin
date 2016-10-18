@@ -300,7 +300,7 @@ public class DeployerCommand implements Constants {
             if (getVersionLabel().equals(deployedVersionLabel)) {
                 log("Application version correct!");
             } else {
-                log("Application version incorrect, deploy was rolled back.");
+                log("Application version reported by beanstalk didn't match what we tried to deploy.  Deploy was likely rolled back.  Please check the beanstalk console in AWS for more details.");
                 return true;
             }
             return false;
