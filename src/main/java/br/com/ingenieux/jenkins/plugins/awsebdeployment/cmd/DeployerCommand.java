@@ -343,6 +343,7 @@ public class DeployerCommand implements Constants {
             String resultingStatus = result.getEnvironments().get(0).getStatus();
 
             if (!STATUS_READY.equals(resultingStatus)) {
+                log("Environment currently being updated by other process ... waiting.");
                 WaitForEnvironment waitForStatus = new WaitForEnvironment(WaitFor.Status, false);
                 waitForStatus.setDeployerContext(c);
 
