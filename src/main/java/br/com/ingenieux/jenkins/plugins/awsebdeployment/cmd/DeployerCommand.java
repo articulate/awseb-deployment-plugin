@@ -378,19 +378,10 @@ public class DeployerCommand implements Constants {
             }
 
             String resultingStatus = result.getEnvironments().get(0).getStatus();
-            boolean abortableP = result.getEnvironments().get(0).getAbortableOperationInProgress();
 
             if (!STATUS_READY.equals(resultingStatus)) {
-                if (abortableP) {
-                    log("AWS Abortable Environment Update Found. Calling abort on AWSEB Service");
-
-                    getAwseb().abortEnvironmentUpdate(new AbortEnvironmentUpdateRequest().withEnvironmentId(getEnvironmentId()));
-
-                    log("Environment Update Aborted. Proceeding.");
-                }
-
-                WaitForEnvironment waitForStatus = new WaitForEnvironment(WaitFor.Status).withoutVersionCheck();
-
+                log("Environment currently being updated by other process ... waiting.");
+                WaitForEnvironment waitForStatus = new WaitForEnvironment(WaitFor.Status, false);
                 waitForStatus.setDeployerContext(c);
 
                 return waitForStatus.perform();
